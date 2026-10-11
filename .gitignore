@@ -1,2 +1,14 @@
 __pycache__/
 *.py[cod]
+
+# Local environment
+.venv/
+.pytest_cache/
+
+# Training and generation artifacts (too large for git; keep them on Kaggle)
+outputs/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.zip

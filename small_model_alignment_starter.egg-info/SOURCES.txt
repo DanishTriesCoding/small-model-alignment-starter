@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+alignment/__init__.py
+small_model_alignment_starter.egg-info/PKG-INFO
+small_model_alignment_starter.egg-info/SOURCES.txt
+small_model_alignment_starter.egg-info/dependency_links.txt
+small_model_alignment_starter.egg-info/top_level.txt
+tests/test_public_adapter_smoke.py
