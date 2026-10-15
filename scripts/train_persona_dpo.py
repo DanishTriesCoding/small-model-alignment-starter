@@ -190,6 +190,8 @@ def build_trainer(args, model, tokenizer, train_dataset, eval_dataset, peft_conf
         beta=dpo_beta,
         warmup_ratio=warmup_fraction,
         max_length=maximum_sequence_length,
+        fp16=True,
+        bf16=False,
         eval_strategy="epoch",
         save_strategy="epoch",
         logging_strategy="steps",
@@ -206,8 +208,12 @@ def main():
     set_seed(args.seed)
     os.makedirs(args.output_dir, exist_ok=True)
     config_path = os.path.join(args.output_dir, "config.json")
+    run_configuration = vars(args).copy()
+    run_configuration["model_dtype"] = "float16"
+    run_configuration["fp16"] = True
+    run_configuration["bf16"] = False
     with open(config_path, "w", encoding="utf-8") as config_file:
-        json.dump(vars(args), config_file, indent=2)
+        json.dump(run_configuration, config_file, indent=2)
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
     ##im reading args and setting reproducible seed then load my tokenizer
     if tokenizer.pad_token is None:
@@ -215,7 +221,10 @@ def main():
     tokenizer.padding_side = "left"
     ###using left padding because TRL's DPOTrainer expects prompts to be padded on the left
     # Load the base language model that the LoRA adapter will be trained on.
-    model = AutoModelForCausalLM.from_pretrained(args.model_name)
+    model = AutoModelForCausalLM.from_pretrained(
+        args.model_name,
+        torch_dtype=torch.float16,
+    )
     train_dataset, eval_dataset = prepare_datasets(args)
     peft_config = build_lora_config(args)
     trainer = build_trainer(args=args,model=model,tokenizer=tokenizer,train_dataset=train_dataset,eval_dataset=eval_dataset,peft_config=peft_config,)
