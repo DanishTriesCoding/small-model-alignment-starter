@@ -55,6 +55,8 @@ def parse_args():
     p.add_argument("--beta", type=float, default=0.1)
     p.add_argument("--optimizer", choices=["adamw", "rmsprop"], default="adamw")
     p.add_argument("--max_grad_norm", type=float, default=1.0)
+    p.add_argument("--initial_loss_scale", type=float, default=1024.0,
+                   help="start fp16 gradient scaling lower to reduce early overflow on T4")
     p.add_argument("--epochs", type=int, default=1)
     p.add_argument("--eval_every", type=int, default=50, help="optimizer steps between validations")
     p.add_argument("--log_every", type=int, default=10, help="optimizer steps between train logs")
@@ -311,7 +313,7 @@ def main():
     total_steps = steps_per_epoch * args.epochs                       # this is the actual number of optimizer updates the loop can make
     if args.max_steps is not None:
         total_steps = min(total_steps, args.max_steps)
-    scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
+    scaler = torch.amp.GradScaler("cuda", enabled=use_amp, init_scale=args.initial_loss_scale)
     print(f"optimizer steps={total_steps}")
 
     best_acc = -1.0
@@ -344,10 +346,13 @@ def main():
                 continue
 
             # im only using one prefilled optimizer here
+            scale_before_step = scaler.get_scale()                              ##remembering this so logs can tell me if fp16 scaler skipped an update
             scaler.unscale_(optimizer)
             grad_norm = torch.nn.utils.clip_grad_norm_(policy.parameters(), args.max_grad_norm)
             scaler.step(optimizer)
             scaler.update()
+            scale_after_step = scaler.get_scale()                               ##when the scale drops, GradScaler found inf/nan grads and skipped optimizer.step()
+            optimizer_step_skipped = use_amp and scale_after_step < scale_before_step
             optimizer.zero_grad(set_to_none=True)
             step += 1
 
@@ -360,6 +365,8 @@ def main():
                     "reward_accuracy": (chosen > rejected).float().mean().item(),
                     "reward_margin": (chosen - rejected).mean().item(),
                     "grad_norm": float(grad_norm),
+                    "loss_scale": scale_after_step,
+                    "optimizer_step_skipped": optimizer_step_skipped,
                     "elapsed_min": round((time.time() - start) / 60, 2),
                 })
                 window = {"loss": 0.0, "chosen": [], "rejected": [], "count": 0}
