@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 
 import numpy as np
@@ -31,6 +32,12 @@ def parse_args():
     p.add_argument("--learning_rate", type=float, default=5e-5)
     p.add_argument("--beta", type=float, default=0.1)
     p.add_argument("--warmup_ratio", type=float, default=0.1)
+    p.add_argument(
+        "--max_steps",
+        type=int,
+        default=-1,
+        help="use a small positive value for a smoke run; -1 runs all configured epochs",
+    )
     ##rank/alpha for adapter capacity and also doin dropout for preventing i tjhink overfitting or regularization whatever it is 
     p.add_argument("--lora_r", type=int, default=8)
     p.add_argument("--lora_alpha", type=int, default=16)
@@ -113,9 +120,9 @@ def format_for_trl(preference_rows):
         ###so im using a new list not in place and i check example by example seeing if columns there and strip white space and see if there is text
         ##below is just new rows made and appended then made into trl form 
         formatted_preference_row = {
-            "prompt": prompt_text,
-            "chosen": chosen_text,
-            "rejected": rejected_text,
+            "prompt": [{"role": "user", "content": prompt_text}],
+            "chosen": [{"role": "assistant", "content": chosen_text}],
+            "rejected": [{"role": "assistant", "content": rejected_text}],
         }
         formatted_preference_rows.append(formatted_preference_row)
     trl_dataset = Dataset.from_list(formatted_preference_rows) ##the dataset.py file giving me this .from_list()
@@ -187,6 +194,7 @@ def build_trainer(args, model, tokenizer, train_dataset, eval_dataset, peft_conf
         save_strategy="epoch",
         logging_strategy="steps",
         logging_steps=10,
+        max_steps=args.max_steps,
         report_to="none",
         seed=random_seed,
     )
@@ -196,12 +204,16 @@ def build_trainer(args, model, tokenizer, train_dataset, eval_dataset, peft_conf
 def main():
     args = parse_args()
     set_seed(args.seed)
+    os.makedirs(args.output_dir, exist_ok=True)
+    config_path = os.path.join(args.output_dir, "config.json")
+    with open(config_path, "w", encoding="utf-8") as config_file:
+        json.dump(vars(args), config_file, indent=2)
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
     ##im reading args and setting reproducible seed then load my tokenizer
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-    tokenizer.padding_side = "right"
-###in case no padding im doing eos one and for padding side keeping it right but gotta cehck again
+    tokenizer.padding_side = "left"
+    ###using left padding because TRL's DPOTrainer expects prompts to be padded on the left
     # Load the base language model that the LoRA adapter will be trained on.
     model = AutoModelForCausalLM.from_pretrained(args.model_name)
     train_dataset, eval_dataset = prepare_datasets(args)

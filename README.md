@@ -22,7 +22,7 @@ Use a Kaggle notebook with the `GPU T4 x2` accelerator. After cloning this repos
 
 ```bash
 python -m pip uninstall -y -q torchao || true
-python -m pip install -q "transformers>=4.43.0,<5" "datasets>=2.18,<5" huggingface_hub accelerate tqdm pyyaml sentencepiece safetensors pytest
+python -m pip install -q "transformers>=4.43.0,<5" "datasets>=2.18,<5" huggingface_hub accelerate tqdm pyyaml sentencepiece safetensors pytest trl peft
 python -m pip install -q -e . --no-deps
 ```
 
