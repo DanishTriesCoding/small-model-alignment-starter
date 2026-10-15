@@ -70,7 +70,6 @@ def set_seed(seed):
 
 
 def log_metrics(path, record):
-    """Append one JSON line so partial progress survives a Kaggle disconnect."""
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
     print(record, flush=True)
@@ -308,7 +307,8 @@ def main():
         optimizer = torch.optim.RMSprop(policy.parameters(), lr=args.lr)
     else:
         optimizer = torch.optim.AdamW(policy.parameters(), lr=args.lr, weight_decay=0.0)
-    total_steps = math.ceil(len(train_loader) * args.epochs / args.grad_accum)
+    steps_per_epoch = math.ceil(len(train_loader) / args.grad_accum)  # every epoch gets one optimizer step for its last smaller leftover group too
+    total_steps = steps_per_epoch * args.epochs                       # this is the actual number of optimizer updates the loop can make
     if args.max_steps is not None:
         total_steps = min(total_steps, args.max_steps)
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
@@ -324,16 +324,23 @@ def main():
     for epoch in range(args.epochs):
         for micro_step, dpo_batch in enumerate(train_loader, start=1):
 
+            ##usually i collect 32 mini batches before updating the model, but the last group in an epoch can be smaller than 32
+            ##for example if there are 100 batches, the groups are 32 + 32 + 32 + 4, so that final group still needs its own update
+            current_group_start = ((micro_step - 1) // args.grad_accum) * args.grad_accum
+            current_group_size = min(args.grad_accum, len(train_loader) - current_group_start)
+
             loss, chosen_rewards, rejected_rewards = dpo_forward(policy, reference, dpo_batch, args.beta, policy_device, ref_device, use_amp)  
             ##4 fwd passes, policy ones have grads
-            scaler.scale(loss / args.grad_accum).backward()  
-            ##/32 so 32 pairs = ONE averaged grad, only flows into policy
+            scaler.scale(loss / current_group_size).backward()
+            ##divide by the number of batches in THIS group, so a last group of 4 is averaged over 4 instead of pretending it had 32
             window["loss"] += loss.item() ##for the train log every 10 steps
             window["count"] += 1
             window["chosen"].append(chosen_rewards.float().cpu())      ##collect rewards -> train reward accuracy in logs
             window["rejected"].append(rejected_rewards.float().cpu())
 
-            if micro_step % args.grad_accum != 0:
+            finished_full_group = micro_step % args.grad_accum == 0
+            finished_last_group = micro_step == len(train_loader)
+            if not finished_full_group and not finished_last_group:
                 continue
 
             # im only using one prefilled optimizer here
