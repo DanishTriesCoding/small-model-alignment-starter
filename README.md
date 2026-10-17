@@ -1,6 +1,6 @@
 # Small-Model Alignment Starter
 
-This branch is the student starter package for the SFT + DPO alignment assignment. It is intentionally minimal: it provides the tested environment metadata, assignment PDF, fixed evaluation/data files, and no completed training implementation.
+My completed SFT + DPO alignment assignment (CS5326 PA2), built on the course starter package. It contains the SFT and from-scratch DPO training code, the TRL LoRA-DPO persona run, the generation, pairing and Kaggle judging pipeline, and all evaluation results. The final report is `report/report.pdf` (LaTeX source in `report/`), and the results it cites are indexed in the [Results](#results) section below.
 
 ## What Is Included
 
@@ -56,8 +56,8 @@ PYTHONPATH=. python -m pytest -q tests/test_public_adapter_smoke.py
 ```
 
 The tests use a tiny local tokenizer and model, so they do not download a model,
-load the assignment datasets, or require a GPU. The starter adapter raises
-`NotImplementedError` until you connect it to your implementation. Passing the
+load the assignment datasets, or require a GPU. In this repository the adapter
+is connected to my implementation and all 7 public tests pass. Passing the
 public tests checks the interface and a few basic invariants; the private grader
 also checks numerical correctness and harder edge cases described in the manual.
 
