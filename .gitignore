@@ -13,3 +13,6 @@ checkpoints/
 *.bin
 *.pt
 *.zip
+
+# Kaggle clone that came inside the judge zip (not part of the results)
+results/small-model-alignment-starter/

@@ -1,0 +1,12 @@
+{"pair_id": "pair-000001", "prompt_id": "persona-coding-001", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000002", "prompt_id": "persona-coding-002", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000003", "prompt_id": "persona-coding-003", "dataset": "persona_style_eval", "model_a": "smollm2_lora", "model_b": "smollm2_base"}
+{"pair_id": "pair-000004", "prompt_id": "persona-cooking-001", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000005", "prompt_id": "persona-cooking-002", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000006", "prompt_id": "persona-cooking-003", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000007", "prompt_id": "persona-general-001", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000008", "prompt_id": "persona-general-002", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000009", "prompt_id": "persona-general-003", "dataset": "persona_style_eval", "model_a": "smollm2_lora", "model_b": "smollm2_base"}
+{"pair_id": "pair-000010", "prompt_id": "persona-safety-001", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000011", "prompt_id": "persona-safety-002", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}
+{"pair_id": "pair-000012", "prompt_id": "persona-safety-003", "dataset": "persona_style_eval", "model_a": "smollm2_base", "model_b": "smollm2_lora"}

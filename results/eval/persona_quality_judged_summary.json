@@ -1,0 +1,91 @@
+{
+  "judge_model": "google/gemini-3.6-flash",
+  "criterion": "quality",
+  "target_model": "smollm2_lora",
+  "total_pairs": 12,
+  "judged_pairs": 12,
+  "pairs_that_needed_retries": 0,
+  "position_counts": {
+    "A": 8,
+    "B": 2,
+    "tie": 2,
+    "unknown": 0
+  },
+  "overall": {
+    "pairs": 12,
+    "wins": 4,
+    "losses": 6,
+    "ties": 2,
+    "unknown": 0,
+    "failures": 0,
+    "win_rate_without_ties": 0.4,
+    "win_rate_ties_as_half": 0.4166666666666667,
+    "wins_rate": 0.3333333333333333,
+    "losses_rate": 0.5,
+    "ties_rate": 0.16666666666666666,
+    "unknown_rate": 0.0,
+    "failures_rate": 0.0
+  },
+  "by_category": {
+    "coding": {
+      "pairs": 3,
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "unknown": 0,
+      "failures": 0,
+      "win_rate_without_ties": 0.6666666666666666,
+      "win_rate_ties_as_half": 0.6666666666666666,
+      "wins_rate": 0.6666666666666666,
+      "losses_rate": 0.3333333333333333,
+      "ties_rate": 0.0,
+      "unknown_rate": 0.0,
+      "failures_rate": 0.0
+    },
+    "cooking": {
+      "pairs": 3,
+      "wins": 0,
+      "losses": 3,
+      "ties": 0,
+      "unknown": 0,
+      "failures": 0,
+      "win_rate_without_ties": 0.0,
+      "win_rate_ties_as_half": 0.0,
+      "wins_rate": 0.0,
+      "losses_rate": 1.0,
+      "ties_rate": 0.0,
+      "unknown_rate": 0.0,
+      "failures_rate": 0.0
+    },
+    "general_help": {
+      "pairs": 3,
+      "wins": 1,
+      "losses": 1,
+      "ties": 1,
+      "unknown": 0,
+      "failures": 0,
+      "win_rate_without_ties": 0.5,
+      "win_rate_ties_as_half": 0.5,
+      "wins_rate": 0.3333333333333333,
+      "losses_rate": 0.3333333333333333,
+      "ties_rate": 0.3333333333333333,
+      "unknown_rate": 0.0,
+      "failures_rate": 0.0
+    },
+    "safety_sensitive": {
+      "pairs": 3,
+      "wins": 1,
+      "losses": 1,
+      "ties": 1,
+      "unknown": 0,
+      "failures": 0,
+      "win_rate_without_ties": 0.5,
+      "win_rate_ties_as_half": 0.5,
+      "wins_rate": 0.3333333333333333,
+      "losses_rate": 0.3333333333333333,
+      "ties_rate": 0.3333333333333333,
+      "unknown_rate": 0.0,
+      "failures_rate": 0.0
+    }
+  }
+}

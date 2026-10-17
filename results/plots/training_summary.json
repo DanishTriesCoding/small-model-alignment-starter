@@ -1,0 +1,53 @@
+{
+  "sft": {
+    "last_logged_train_step": 930,
+    "best_step": 900,
+    "best_val_loss": 1.3845256762504579,
+    "last_val_step": 900,
+    "last_val_loss": 1.3845256762504579
+  },
+  "dpo_hh": {
+    "last_logged_step": 460,
+    "best_step": 400,
+    "best_val": {
+      "loss": 0.6300612088441849,
+      "reward_accuracy": 0.6549999713897705,
+      "reward_margin": 0.2539965510368347
+    },
+    "last_val_step": 469,
+    "last_val": {
+      "loss": 0.6244040016531944,
+      "reward_accuracy": 0.6489999890327454,
+      "reward_margin": 0.2679819166660309
+    },
+    "skipped_optimizer_steps_in_logs": 0
+  },
+  "dpo_uf": {
+    "last_logged_step": 460,
+    "best_step": 300,
+    "best_val": {
+      "loss": 0.5903906817436219,
+      "reward_accuracy": 0.6899999976158142,
+      "reward_margin": 0.4627286493778229
+    },
+    "last_val_step": 469,
+    "last_val": {
+      "loss": 0.5821896083950996,
+      "reward_accuracy": 0.6869999766349792,
+      "reward_margin": 0.5166304707527161
+    },
+    "skipped_optimizer_steps_in_logs": 0
+  },
+  "persona_lora": {
+    "last_logged_step": 70,
+    "best_step": null,
+    "best_val": null,
+    "last_val_step": 75,
+    "last_val": {
+      "loss": 0.25327932834625244,
+      "reward_accuracy": 1.0,
+      "reward_margin": 1.2864955013448542
+    },
+    "skipped_optimizer_steps_in_logs": null
+  }
+}

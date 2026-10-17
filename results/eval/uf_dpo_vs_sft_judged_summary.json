@@ -1,0 +1,46 @@
+{
+  "judge_model": "google/gemini-3.6-flash",
+  "criterion": "quality",
+  "target_model": "dpo_uf",
+  "total_pairs": 300,
+  "judged_pairs": 300,
+  "pairs_that_needed_retries": 20,
+  "position_counts": {
+    "A": 153,
+    "B": 86,
+    "tie": 61,
+    "unknown": 0
+  },
+  "overall": {
+    "pairs": 300,
+    "wins": 92,
+    "losses": 147,
+    "ties": 61,
+    "unknown": 0,
+    "failures": 0,
+    "win_rate_without_ties": 0.38493723849372385,
+    "win_rate_ties_as_half": 0.4083333333333333,
+    "wins_rate": 0.30666666666666664,
+    "losses_rate": 0.49,
+    "ties_rate": 0.20333333333333334,
+    "unknown_rate": 0.0,
+    "failures_rate": 0.0
+  },
+  "by_category": {
+    "all": {
+      "pairs": 300,
+      "wins": 92,
+      "losses": 147,
+      "ties": 61,
+      "unknown": 0,
+      "failures": 0,
+      "win_rate_without_ties": 0.38493723849372385,
+      "win_rate_ties_as_half": 0.4083333333333333,
+      "wins_rate": 0.30666666666666664,
+      "losses_rate": 0.49,
+      "ties_rate": 0.20333333333333334,
+      "unknown_rate": 0.0,
+      "failures_rate": 0.0
+    }
+  }
+}
